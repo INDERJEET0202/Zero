@@ -35,7 +35,7 @@ export default function useAnime() {
   async function getTrending() {
     const response = await fetch(
       `${API.trending}?${new URLSearchParams({
-        perPage: "10",
+        perPage: "20",
       })}`,
       { next: { revalidate: 60 * 60 * 24 } }
     );
@@ -44,7 +44,9 @@ export default function useAnime() {
   }
 
   async function getInfo(id: string) {
-    const response = await fetch(`${API.info}/${id}`);
+    const response = await fetch(`${API.info}/${id}`, {
+      next: { revalidate: 60 * 5 },
+    });
     const text = await response.text();
     try{
       const json = JSON.parse(text);
@@ -55,7 +57,9 @@ export default function useAnime() {
   }
 
   async function getSearch(query: string) {
-    const response = await fetch(`${API.search}/${query}`);
+    const response = await fetch(`${API.search}/${query}`, {
+      next: { revalidate: 60 * 5 },
+    });
     const text = await response.text();
     try{
       const json = JSON.parse(text);
